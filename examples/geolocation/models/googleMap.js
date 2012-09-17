@@ -11,9 +11,12 @@ tipJS.model({
 	name:"geolocation.googleMap",
 	mapObject:null,
 	getGoogleMap:function(){
+		// load Model on synchronized Mode
+		var globalModel = this.loadModel("globalModel", true);
+		
 		return new google.maps.Map(document.getElementById("googleMap"), {
 			zoom : 1,
-			center : new google.maps.LatLng(globalLatitude, globalLongitude),
+			center : new google.maps.LatLng(globalModel.latitude, globalModel.longitude),
 			mapTypeId : google.maps.MapTypeId.ROADMAP
 		});
 	},

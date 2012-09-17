@@ -16,17 +16,19 @@ tipJS.controller({
 			alert("No data error");
 			return;
 		}
+		// load Model on synchronized Mode
+		var globalModel = this.loadModel("globalModel", true);
 		var loadData = JSON.parse(loadObj);
-		globalLatitude = loadData.latitude;
-		globalLongitude = loadData.longitude;
+		globalModel.latitude = loadData.latitude;
+		globalModel.longitude = loadData.longitude;
 		
 		// get the googleMap Model
 		var googleMap = this.loadModel("googleMap");
-		googleMap.setGoogleMap(globalGoogleMap);
+		googleMap.setGoogleMap(globalModel.googleMap);
 		
-		var currentPosition = googleMap.setMapPosition(globalLatitude, globalLongitude);
-		googleMap.clearMapMarker(globalMarker);
-		globalMarker = googleMap.makeMapMarker(currentPosition);
+		var currentPosition = googleMap.setMapPosition(globalModel.latitude, globalModel.longitude);
+		googleMap.clearMapMarker(globalModel.marker);
+		globalModel.marker = googleMap.makeMapMarker(currentPosition);
 		
 		tipJS.debug(this.name + " Done");
 	}

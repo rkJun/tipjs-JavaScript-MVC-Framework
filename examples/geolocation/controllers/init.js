@@ -19,28 +19,28 @@ tipJS.controller({
 		
 		// get the googleMap Model
 		var googleMap = this.loadModel("googleMap");
-		
+		var globalModel = this.loadModel("globalModel", true);
 		// Displayed map in the page
-		globalGoogleMap = googleMap.getGoogleMap();
+		globalModel.googleMap = googleMap.getGoogleMap();
 		
 		this.setEventListeners();
 		
 		tipJS.debug(this.name + " Done");
 	},
 	setEventListeners:function(){
-		// Gets the position information
+		// Show my location
 		document.getElementById("btGet").addEventListener("click", function(){
 			tipJS.action("geolocation.get");
 		}, true);
-		// Stop the acquisition of the position information
+		// Stop tracking my location
 		document.getElementById("btStop").addEventListener("click", function(){
 			tipJS.action("geolocation.stop");
 		}, true);
-		// Save the position information
+		// Save my current location
 		document.getElementById("btSave").addEventListener("click", function(){
 			tipJS.action("geolocation.save");
 		}, true);
-		// Load the position information stored
+		// Load saved location
 		document.getElementById("btLoad").addEventListener("click", function(){
 			tipJS.action("geolocation.load");
 		}, true);

@@ -17,26 +17,28 @@ tipJS.controller({
 			enableHighAccuracy : true,
 			timeout : 1*60*1000
 		}
-		globalWatchID = navigator.geolocation.watchPosition(this.onSuccess, this.onError, option);
+		// load Model on synchronized Mode
+		var globalModel = this.loadModel("globalModel", true);
+		globalModel.watchID = navigator.geolocation.watchPosition(this.onSuccess, this.onError, option);
 		
 		tipJS.debug(this.name + " Done");
 	},
 	// Success Handler
 	onSuccess:function(position){
-		globalLatitude = position.coords.latitude;
-		globalLongitude = position.coords.longitude;
+		// load Model on synchronized Mode
+		var globalModel = tipJS.loadModel("geolocation.globalModel", true);
+		globalModel.latitude = position.coords.latitude;
+		globalModel.longitude = position.coords.longitude;
 		
-		if (!globalMarker) {
-			globalGoogleMap.setZoom(13);
-		}
+		globalModel.googleMap.setZoom(13);
 		
 		// get the googleMap Model
 		var googleMap = tipJS.loadModel("geolocation.googleMap");
-		googleMap.setGoogleMap(globalGoogleMap);
+		googleMap.setGoogleMap(globalModel.googleMap);
 		
-		var currentPosition = googleMap.setMapPosition(globalLatitude, globalLongitude);
-		googleMap.clearMapMarker(globalMarker);
-		globalMarker = googleMap.makeMapMarker(currentPosition);
+		var currentPosition = googleMap.setMapPosition(globalModel.latitude, globalModel.longitude);
+		googleMap.clearMapMarker(globalModel.marker);
+		globalModel.marker = googleMap.makeMapMarker(currentPosition);
 	},
 	// Error Handler
 	onError:function(error){

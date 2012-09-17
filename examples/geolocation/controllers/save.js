@@ -12,9 +12,12 @@ tipJS.controller({
 	invoke:function(params){
 		tipJS.debug(this.name + " Start");
 		
+		// load Model on synchronized Mode
+		var globalModel = this.loadModel("globalModel", true);
+		
 		var saveObj = {
-			latitude : globalLatitude,
-			longitude : globalLongitude
+			latitude : globalModel.latitude,
+			longitude : globalModel.longitude
 		}
 		try{
 			window.localStorage.setItem("geolocation", JSON.stringify(saveObj));

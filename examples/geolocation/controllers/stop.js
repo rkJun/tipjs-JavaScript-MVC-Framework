@@ -11,15 +11,16 @@ tipJS.controller({
 	name : "geolocation.stop",
 	invoke:function(params){
 		tipJS.debug(this.name + " Start");
-		
+		// load Model on synchronized Mode
+		var globalModel = this.loadModel("globalModel", true);
 		// globalWatchID
-		if(globalWatchID == null){
+		if(globalModel.watchID == null){
 			alert("do nothing");
 			return;
 		}
-		navigator.geolocation.clearWatch(globalWatchID);
+		navigator.geolocation.clearWatch(globalModel.watchID);
 		// clear
-		globalWatchID = null;
+		globalModel.watchID = null;
 		
 		tipJS.debug(this.name + " Done");
 	}

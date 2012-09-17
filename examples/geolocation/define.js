@@ -17,7 +17,8 @@ tipJS.define({
 		"load.js"
 	],
 	models:[
-		"googleMap.js"
+		"googleMap.js",
+		"globalModel.js"
 	],
 	onLoad:function(){
 		tipJS.debug(this.name + ".onLoad Start");
