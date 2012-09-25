@@ -1,5 +1,5 @@
 /*
- * tipJS - Javascript MVC Framework ver.1.000
+ * tipJS - OpenSource Javascript MVC Framework ver.1.19
  * 
  * Copyright 2012.07 SeungHyun PAEK
  * Dual licensed under the MIT or GPL Version 2 licenses.
@@ -8,9 +8,9 @@
  */
 // configuring tipJS
 tipJS.config({
-	noCache:false,
+	noCache:true,
 	noCacheVersion:"1.000",
-	noCacheAuto:false,
+	noCacheAuto:true,
 	noCacheParam:"noCacheVersion",
 	charSet:"utf-8",
 	developmentHostList:[
@@ -30,6 +30,7 @@ tipJS.config({
 	],
 	applicationPath:{
 		geolocation : '/tipJS/examples/geolocation',
+		FileAPI : '/tipJS/examples/FileAPI',
 		helloWorld : '/tipJS/examples/helloWorld',
 		helloWorldTpl : '/tipJS/examples/helloWorldTpl'
 		,withExtJS : '/tipJS/examples/withExtJS'

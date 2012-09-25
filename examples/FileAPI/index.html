@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+<meta charset="utf-8">
+<head>
+<title>tipJS.com - Javascript MVC Framework FileAPI Example(HTML5)</title>
+<script src="/tipJS/tipJS/tipJS-MVC-1.19-dev.js"></script>
+<style>
+h1{
+	font-size:25px;
+}
+h2{
+	font-size:20px;
+}
+ul{
+	font-size:12px;
+}
+.buttons{
+	border:1px solid #000;
+	background-color:#fff;
+	width:600px;
+	height:30px;
+}
+img{
+	cursor : pointer;
+}
+</style>
+<script>
+window.onload = function(){
+	tipJS.loadApp(["FileAPI"]);
+	// call Controller
+	tipJS.action("FileAPI.init");
+};
+</script>
+</head>
+<body style="margin:0px;padding:0px;">
+<div style="width:620px;margin:10px;">
+<h1><a href="http://tipjs.com">tipJS.com</a> - Javascript MVC Framework Example</h1>
+<h2>HTML5 FileAPI Example</h2>
+<div><input type="file" id="imageFile" accept="image/*" /></div>
+<progress id="loadingBar" max="100" value="0" style="width:600px;">Loading...</progress>
+<div id="imageList"></div>
+<div id="imageInfo"></div>
+<input type="button" id="btLoad" class="buttons" value="Load Image" />
+<iframe id="imageView" width="600" height="400"></iframe>
+	<div>
+		- Source
+		<ul>
+			<li><a href="define.js" target="_blank">define.js</a></li>
+			<li>
+				controllers
+				<ul>
+					<li><a href="./controllers/init.js" target="_blank">init.js</a></li>
+					<li><a href="./controllers/load.js" target="_blank">load.js</a></li>
+				</ul>
+			</li>
+			<li>
+				models
+				<ul>
+					<li><a href="./models/globalModel.js" target="_blank">globalModel.js</a></li>
+					<li><a href="./models/readerEventMgr.js" target="_blank">readerEventMgr.js</a></li>
+				</ul>
+			</li>
+			<li>
+				views
+				<ul>
+					<li><a href="./views/imageInfo.js" target="_blank">imageInfo.js</a></li>
+				</ul>
+			</li>
+			<li>
+				HTML Templates
+				<ul>
+					<li><a href="./templates/imageInfo.tpl" target="_blank">imageInfo.tpl</a></li>
+				</ul>
+			</li>
+		</ul>
+	</div>
+</div>
+
+</body>
+</html>
