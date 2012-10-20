@@ -1,5 +1,5 @@
 /*
- * tipJS - Javascript MVC Framework ver.1.000
+ * tipJS - Javascript MVC Framework ver.1.21
  * 
  * Copyright 2012.07 SeungHyun PAEK
  * Dual licensed under the MIT or GPL Version 2 licenses.
@@ -11,7 +11,7 @@ tipJS.controller({
 	name : "helloWorldTpl.hello",
 	invoke:function(params){
 		var _templateConfig = {
-			url:"/tipJS/examples/helloWorldTpl/templates/helloWorld.tpl",
+			url:"./templates/helloWorld.tpl",
 			renderTo:"contents",
 			data:{
 				helloworld:"Hello World from " + params

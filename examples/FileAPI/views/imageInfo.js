@@ -11,7 +11,7 @@ tipJS.view({
 	__name:"FileAPI.imageInfo",
 	imageInfoLog:function(imageFile){
 		var _templateConfig = {
-			url:"/tipJS/examples/FileAPI/templates/imageInfo.tpl",
+			url:"./templates/imageInfo.tpl",
 			renderTo:"imageInfo",
 			data:imageFile
 		};
