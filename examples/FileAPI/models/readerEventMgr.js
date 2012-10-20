@@ -8,16 +8,16 @@
  */
 
 tipJS.model({
-	name:"FileAPI.readerEventMgr",
+	__name:"FileAPI.readerEventMgr",
 	setEvent : function(){
-		var imageReader = this.loadModel("globalModel", true).imageReader;
+		var imageReader = this.loadModel("globalModelVO", true).imageReader;
 		imageReader.onload = this.onload;
 		imageReader.onprogress = this.onprogress;
 	},
 	onload : function(e){
 		tipJS.debug("reader onload");
 		var totalData = e.total;
-		var globalModel = tipJS.loadModel("FileAPI.globalModel", true);
+		var globalModel = tipJS.loadModel("FileAPI.globalModelVO", true);
 		globalModel.loadingBar.innerHTML = "100% ("+totalData+"/"+totalData+" Bytes)";
 		globalModel.loadingBar.value = 100;
 		globalModel.layerFileInfo.innerHTML += "읽기 완료<br>";
@@ -39,7 +39,7 @@ tipJS.model({
 		var totalData = e.total;
 		var per = (loadData/totalData) * 100;
 		//per = per.toFixed(1);
-		tipJS.loadModel("FileAPI.globalModel", true).loadingBar.innerHTML = per+"% ("+loadData+"/"+totalData+" Bytes)";
-		tipJS.loadModel("FileAPI.globalModel", true).loadingBar.value = per;
+		tipJS.loadModel("FileAPI.globalModelVO", true).loadingBar.innerHTML = per+"% ("+loadData+"/"+totalData+" Bytes)";
+		tipJS.loadModel("FileAPI.globalModelVO", true).loadingBar.value = per;
 	}
 });

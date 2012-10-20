@@ -1,5 +1,5 @@
 /*
- * tipJS - OpenSource Javascript MVC Framework ver.1.21
+ * tipJS - Javascript MVC Framework ver.1.21
  * 
  * Copyright 2012.07 SeungHyun PAEK
  * Dual licensed under the MIT or GPL Version 2 licenses.
@@ -7,10 +7,11 @@
  * Contact: http://www.tipjs.com/contact
  */
 
-tipJS.define({
-	name:"helloWorld",
-	controllers:[
-		"hello.js"
-	]
+tipJS.model({
+	__name:"geolocation.globalModelVO",
+	googleMap:null,
+	marker:null,
+	latitude:37,
+	longitude:127,
+	watchID:null
 });
-

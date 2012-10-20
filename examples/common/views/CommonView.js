@@ -1,5 +1,5 @@
 /*
- * tipJS - Javascript MVC Framework ver.1.000
+ * tipJS - Javascript MVC Framework ver.1.21
  * 
  * Copyright 2012.07 SeungHyun PAEK
  * Dual licensed under the MIT or GPL Version 2 licenses.
@@ -9,7 +9,7 @@
 // define commonViews
 tipJS.commonView({
 	// required name property
-	name:"CommonView",
+	__name:"CommonView",
 	target:{
 		header:"header",
 		footer:"footer"

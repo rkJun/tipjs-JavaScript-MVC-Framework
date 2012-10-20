@@ -1,5 +1,5 @@
 /*
- * tipJS - Javascript MVC Framework ver.1.19
+ * tipJS - Javascript MVC Framework ver.1.21
  * 
  * Copyright 2012.07 SeungHyun PAEK
  * Dual licensed under the MIT or GPL Version 2 licenses.
@@ -8,7 +8,7 @@
  */
 
 tipJS.view({
-	name:"FileAPI.imageInfo",
+	__name:"FileAPI.imageInfo",
 	imageInfoLog:function(imageFile){
 		var _templateConfig = {
 			url:"/tipJS/examples/FileAPI/templates/imageInfo.tpl",

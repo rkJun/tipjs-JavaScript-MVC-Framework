@@ -1,5 +1,5 @@
 /*
- * tipJS - Javascript MVC Framework ver.1.19
+ * tipJS - Javascript MVC Framework ver.1.21
  * 
  * Copyright 2012.07 SeungHyun PAEK
  * Dual licensed under the MIT or GPL Version 2 licenses.
@@ -26,7 +26,7 @@ tipJS.controller({
 		// FileReader 객체에 이벤트 정의
 		this.loadModel("readerEventMgr").setEvent();
 		// FileReader 객체로 DataURL형식으로 파일을 읽어들임
-		this.loadModel("globalModel", true).imageReader.readAsDataURL(imageFile);
+		this.loadModel("globalModelVO", true).imageReader.readAsDataURL(imageFile);
 		
 		var imageInfo = this.loadView("imageInfo");
 		// 이미지정보 출력

@@ -1,5 +1,5 @@
 /*
- * tipJS - Javascript MVC Framework ver.1.17
+ * tipJS - Javascript MVC Framework ver.1.21
  * 
  * Copyright 2012.07 SeungHyun PAEK
  * Dual licensed under the MIT or GPL Version 2 licenses.
@@ -19,7 +19,7 @@ tipJS.controller({
 		
 		// get the googleMap Model
 		var googleMap = this.loadModel("googleMap");
-		var globalModel = this.loadModel("globalModel", true);
+		var globalModel = this.loadModel("globalModelVO", true);
 		// Displayed map in the page
 		globalModel.googleMap = googleMap.getGoogleMap();
 		

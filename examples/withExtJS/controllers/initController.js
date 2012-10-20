@@ -1,5 +1,5 @@
 /*
- * tipJS - Javascript MVC Framework ver.1.000
+ * tipJS - Javascript MVC Framework ver.1.21
  * 
  * Copyright 2012.07 SeungHyun PAEK
  * Dual licensed under the MIT or GPL Version 2 licenses.

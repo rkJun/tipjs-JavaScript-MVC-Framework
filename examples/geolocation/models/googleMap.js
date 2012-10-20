@@ -1,5 +1,5 @@
 /*
- * tipJS - Javascript MVC Framework ver.1.17
+ * tipJS - Javascript MVC Framework ver.1.21
  * 
  * Copyright 2012.07 SeungHyun PAEK
  * Dual licensed under the MIT or GPL Version 2 licenses.
@@ -8,11 +8,11 @@
  */
 
 tipJS.model({
-	name:"geolocation.googleMap",
+	__name:"geolocation.googleMap",
 	mapObject:null,
 	getGoogleMap:function(){
 		// load Model on synchronized Mode
-		var globalModel = this.loadModel("globalModel", true);
+		var globalModel = this.loadModel("globalModelVO", true);
 		
 		return new google.maps.Map(document.getElementById("googleMap"), {
 			zoom : 1,

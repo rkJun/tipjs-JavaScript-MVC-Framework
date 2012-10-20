@@ -1,5 +1,5 @@
 /*
- * tipJS - OpenSource Javascript MVC Framework ver.1.19
+ * tipJS - OpenSource Javascript MVC Framework ver.1.21
  * 
  * Copyright 2012.07 SeungHyun PAEK
  * Dual licensed under the MIT or GPL Version 2 licenses.
@@ -15,7 +15,7 @@ tipJS.define({
 	],
 	models:[
 		"readerEventMgr.js",
-		"globalModel.js"
+		"globalModelVO.js"
 	],
 	views:[
 		"imageInfo.js"

@@ -1,5 +1,5 @@
 /*
- * tipJS - Javascript MVC Framework ver.1.000
+ * tipJS - Javascript MVC Framework ver.1.21
  * 
  * Copyright 2012.07 SeungHyun PAEK
  * Dual licensed under the MIT or GPL Version 2 licenses.
@@ -8,7 +8,7 @@
  */
 
 tipJS.view({
-	name:"withExtJS.initView",
+	__name:"withExtJS.initView",
 	drawInitGrid:function(store){
 		return Ext.create('Ext.grid.Panel', {
 			store: store,

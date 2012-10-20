@@ -1,5 +1,5 @@
 /*
- * tipJS - Javascript MVC Framework ver.1.17
+ * tipJS - Javascript MVC Framework ver.1.21
  * 
  * Copyright 2012.07 SeungHyun PAEK
  * Dual licensed under the MIT or GPL Version 2 licenses.
@@ -18,7 +18,7 @@ tipJS.controller({
 			timeout : 1*60*1000
 		}
 		// load Model on synchronized Mode
-		var globalModel = this.loadModel("globalModel", true);
+		var globalModel = this.loadModel("globalModelVO", true);
 		globalModel.watchID = navigator.geolocation.watchPosition(this.onSuccess, this.onError, option);
 		
 		tipJS.debug(this.name + " Done");
@@ -26,7 +26,7 @@ tipJS.controller({
 	// Success Handler
 	onSuccess:function(position){
 		// load Model on synchronized Mode
-		var globalModel = tipJS.loadModel("geolocation.globalModel", true);
+		var globalModel = tipJS.loadModel("geolocation.globalModelVO", true);
 		globalModel.latitude = position.coords.latitude;
 		globalModel.longitude = position.coords.longitude;
 		

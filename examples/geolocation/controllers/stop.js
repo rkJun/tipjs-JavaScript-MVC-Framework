@@ -1,5 +1,5 @@
 /*
- * tipJS - Javascript MVC Framework ver.1.17
+ * tipJS - Javascript MVC Framework ver.1.21
  * 
  * Copyright 2012.07 SeungHyun PAEK
  * Dual licensed under the MIT or GPL Version 2 licenses.
@@ -12,7 +12,7 @@ tipJS.controller({
 	invoke:function(params){
 		tipJS.debug(this.name + " Start");
 		// load Model on synchronized Mode
-		var globalModel = this.loadModel("globalModel", true);
+		var globalModel = this.loadModel("globalModelVO", true);
 		// globalWatchID
 		if(globalModel.watchID == null){
 			alert("do nothing");
