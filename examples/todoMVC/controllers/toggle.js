@@ -9,12 +9,16 @@
 
 tipJS.controller({
 	name : "todoMVC.toggle",
-	
-	invoke:function(chkbox){
+
+	invoke : function( chkbox ){
 		tipJS.log(this.name);
-		this.loadModel("globalTodos", true).getTodo( chkbox, function( i, val ) {
+
+		var globalTodos = this.loadModel("globalTodos", true);
+
+		globalTodos.getTodo( chkbox, function( i, val ) {
 			val.completed = !val.completed;
 		});
-		this.loadModel("renderer").render();
+		this.loadView("renderer").updateView( globalTodos );
+		this.loadModel("utils").store( globalTodos.STORE_KEY, globalTodos.todos );
 	}
 });

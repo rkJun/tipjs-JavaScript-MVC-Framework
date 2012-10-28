@@ -23,7 +23,6 @@ tipJS.model({
 		list.on( 'blur', '.edit', this.update );
 		list.on( 'click', '.destroy', this.destroy );
 	},
-	
 	create: function(e) {
 		var params = {
 			event : e,

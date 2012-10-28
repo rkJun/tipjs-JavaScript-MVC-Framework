@@ -9,16 +9,19 @@
 
 tipJS.controller({
 	name : "todoMVC.destroyCompleted",
-	
-	invoke:function(){
+
+	invoke : function(){
 		tipJS.log(this.name);
-		var todos = this.loadModel("globalTodos", true).todos,
-			l = todos.length;
+
+		var globalTodos = this.loadModel("globalTodos", true),
+			l = globalTodos.todos.length;
+
 		while ( l-- ) {
-			if ( todos[l].completed ) {
-				todos.splice( l, 1 );
+			if ( globalTodos.todos[l].completed ) {
+				globalTodos.todos.splice( l, 1 );
 			}
 		}
-		this.loadModel("renderer").render();
+		this.loadView("renderer").updateView( globalTodos );
+		this.loadModel("utils").store( globalTodos.STORE_KEY, globalTodos.todos );
 	}
 });

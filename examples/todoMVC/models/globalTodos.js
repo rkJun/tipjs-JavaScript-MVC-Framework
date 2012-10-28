@@ -12,12 +12,11 @@ tipJS.model({
 
 	init: function() {
 		this.ENTER_KEY = 13;
-		this.todos = this.loadModel("utils").store('todos-jquery');
+		this.STORE_KEY = 'todos-tipJS';
+		this.todos = this.loadModel("utils").store(this.STORE_KEY);
 		this.cacheElements();
 	},
 	cacheElements: function() {
-		this.todoTemplate = Handlebars.compile( $('#todo-template').html() );
-		this.footerTemplate = Handlebars.compile( $('#footer-template').html() );
 		this.$todoApp = $('#todoapp');
 		this.$newTodo = $('#new-todo');
 		this.$toggleAll = $('#toggle-all');
@@ -26,15 +25,6 @@ tipJS.model({
 		this.$footer = this.$todoApp.find('#footer');
 		this.$count = $('#todo-count');
 		this.$clearBtn = $('#clear-completed');
-	},
-	activeTodoCount: function() {
-		var count = 0;
-		$.each( this.todos, function( i, val ) {
-			if ( !val.completed ) {
-				count++;
-			}
-		});
-		return count;
 	},
 	// Accepts an element from inside the ".item" div and
 	// returns the corresponding todo in the todos array

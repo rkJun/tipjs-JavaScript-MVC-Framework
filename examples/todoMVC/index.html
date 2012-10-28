@@ -33,29 +33,13 @@
 		<p>Updated by <a href="http://tipjs.com">tipJS.com - SeungHyun PAEK</a></p>
 		<p>Part of <a href="http://todomvc.com">TodoMVC</a></p>
 	</footer>
-<script src="../../tipJS/tipJS-MVC-1.21.js"></script>
+<script src="../../tipJS/tipJS-MVC-1.21-dev.js"></script>
 <script>
 $(document).ready(function(e){
 	tipJS.log('Document is Ready');
 	tipJS.loadApp(["todoMVC"]);
 	tipJS.action("todoMVC.init");
 });
-</script>
-<script id="todo-template" type="text/x-handlebars-template">
-	{{#this}}
-	<li {{#if completed}}class="completed"{{/if}} data-id="{{id}}">
-		<div class="view">
-			<input class="toggle" type="checkbox" {{#if completed}}checked{{/if}}>
-			<label>{{title}}</label>
-			<button class="destroy"></button>
-		</div>
-		<input class="edit" value="{{title}}">
-	</li>
-	{{/this}}
-	</script>
-	<script id="footer-template" type="text/x-handlebars-template">
-	<span id="todo-count"><strong>{{activeTodoCount}}</strong> {{activeTodoWord}} left</span>
-	{{#if completedTodos}}<button id="clear-completed">Clear completed ({{completedTodos}})</button>{{/if}}
 </script>
 </body>
 </html>

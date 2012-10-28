@@ -9,14 +9,16 @@
 
 tipJS.controller({
 	name : "todoMVC.create",
-	
-	invoke:function(params){
+
+	invoke : function( params ){
 		tipJS.log(this.name);
-		var globalTodos = this.loadModel("globalTodos", true);
-		var utils = this.loadModel("utils");
-		var $input = params.input,
+
+		var globalTodos = this.loadModel("globalTodos", true),
+			utils = this.loadModel("utils"),
+			$input = params.input,
 			e = params.event,
 			val = $.trim( $input.val() );
+
 		if ( e.which !== globalTodos.ENTER_KEY || !val ) {
 			return;
 		}
@@ -26,6 +28,7 @@ tipJS.controller({
 			completed: false
 		});
 		$input.val('');
-		this.loadModel("renderer").render();
+		this.loadView("renderer").updateView( globalTodos );
+		this.loadModel("utils").store( globalTodos.STORE_KEY, globalTodos.todos );
 	}
 });

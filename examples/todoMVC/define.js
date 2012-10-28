@@ -8,12 +8,11 @@
  */
 
 tipJS.define({
-	noCache:false,
-	noCacheAuto:true,
+	noCache:true,
+	noCacheVersion:"1.21",
+	noCacheParam:"tipJS",
+	noCacheAuto:false,
 	name:"todoMVC",
-	extLib:[
-		"extLib/handlebars.min.js"
-	],
 	controllers:[
 		"init.js",
 		"create.js",
@@ -28,8 +27,10 @@ tipJS.define({
 	models:[
 		"bindAction.js",
 		"globalTodos.js",
-		"renderer.js",
 		"utils.js"
+	],
+	views:[
+		"renderer.js"
 	]
 });
 
