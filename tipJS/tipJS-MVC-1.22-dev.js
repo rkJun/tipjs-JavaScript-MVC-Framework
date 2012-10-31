@@ -974,7 +974,7 @@ tipJS.ver = tipJS.version = "1.22";
 		}; // _doController
 
 		if (_controllerWrapper.controller.async === true) 
-			setTimeout(_doController, 5);
+			setTimeout(_doController, 15);
 		else 
 			_doController();
 	};
