@@ -23,10 +23,14 @@ tipJS.config({
 		,"http://tipjs.com/tipJS/extjs-4.1.1/ext-all.js"
 	],
 	commonModel:[
-		"/tipJS/examples/common/models/CommonModel.js"
+		"/tipJS/examples/common/models/CommonModel.js",
+		"/tipJS/tutorial/common/commonParent.js",
+		"/tipJS/tutorial/common/commonParent2.js"
 	],
 	commonView:[
-		"/tipJS/examples/common/views/CommonView.js"
+		"/tipJS/examples/common/views/CommonView.js",
+		"/tipJS/tutorial/common/commonViewParent.js",
+		"/tipJS/tutorial/common/commonViewParent2.js"
 	],
 	applicationPath:{
 		geolocation : '/tipJS/examples/geolocation',
@@ -35,6 +39,14 @@ tipJS.config({
 		helloWorldTpl : '/tipJS/examples/helloWorldTpl'
 		,withExtJS : '/tipJS/examples/withExtJS'
 		,todoMVC : '/tipJS/examples/todoMVC'
+		
+		,Controller : '/tipJS/tutorial/Controller'
+		,Model : '/tipJS/tutorial/Model'
+		,ModelExtend : '/tipJS/tutorial/ModelExtend'
+		,ModelSync : '/tipJS/tutorial/ModelSync'
+		,ModelVO : '/tipJS/tutorial/ModelVO'
+		,View : '/tipJS/tutorial/View'
+		,ViewExtend : '/tipJS/tutorial/ViewExtend'
 	}
 });
 

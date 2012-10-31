@@ -18,7 +18,7 @@ tipJS JavaScript MVC Framework is a small, simple, and effective JavaScript MVC 
 
 ## 3. Process Flowchart of tipJS JavaScript MVC Framework
 
-![tipJS JavaScript MVC Framework structure](http://tipjs.com/wp/wp-content/uploads/2012/08/tipJS_MVC_Framework_structure1.png)
+![tipJS JavaScript MVC Framework structure](http://tipjs.com/wp/wp-content/uploads/2012/08/tipJS-JavaScript-MVC-Framework-Structure.png)
 
 ![tipJS MVC Framework Folder](http://tipjs.com/wp/wp-content/uploads/2012/08/tipJS_MVC_Framework_folder.png)
 
