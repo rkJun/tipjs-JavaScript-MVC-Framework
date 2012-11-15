@@ -8,7 +8,6 @@
  */
 
 tipJS.define({
-	noCache:false,
 	name:"ModelSync",
 	controllers:[
 		"controller1.js",

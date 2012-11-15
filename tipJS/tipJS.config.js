@@ -8,7 +8,7 @@
  */
 // configuring tipJS
 tipJS.config({
-	noCache:false,
+	noCache:true,
 	noCacheVersion:"1.000",
 	noCacheAuto:true,
 	noCacheParam:"noCacheVersion",

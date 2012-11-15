@@ -18,7 +18,7 @@ tipJS.view({
 		var opt = {
 			url:"./views/template.html",
 			renderTo:"contents",
-			data:["child-1","child-2"]
+			data:["child-1","child-2","child-3","child-4"]
 		}
 		this.renderTemplate(opt);
 	}

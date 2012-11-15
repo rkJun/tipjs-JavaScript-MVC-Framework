@@ -8,7 +8,6 @@
  */
 
 tipJS.define({
-	noCache:false,
 	name:"ViewExtend",
 	controllers:[
 		"controller1.js"

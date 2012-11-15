@@ -16,7 +16,7 @@ tipJS.commonView({
 		var opt = {
 			url:"./views/template.html",
 			renderTo:"contents",
-			data:["commonViewParent2-1","commonViewParent2-2"]
+			data:["commonViewParent2-1","commonViewParent2-2","commonViewParent2-3"]
 		}
 		this.renderTemplate(opt);
 	}

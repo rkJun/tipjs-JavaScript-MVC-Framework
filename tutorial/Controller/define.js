@@ -8,7 +8,6 @@
  */
 
 tipJS.define({
-	noCache:false,
 	name:"Controller",
 	controllers:[
 		"sync.js",
