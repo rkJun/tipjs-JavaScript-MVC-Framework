@@ -189,9 +189,8 @@ tipJS.ver = tipJS.version = "1.26";
 		if (typeof child.__extend === "string") {
 			child = __getExtendedObj__(child, child.__extend);
 		} else if (child.__extend instanceof Array) {
-			var _parents = child.__extend,
-				_parentsLen = _parents.length;
-			for (var i = 0; i < _parentsLen; i++) {
+			var _parents = child.__extend;
+			for (var i = _parents.length; i--;) {
 				child = __getExtendedObj__(child, _parents[i]);
 			}
 		}
