@@ -25,7 +25,8 @@ tipJS.config({
 	commonModel:[
 		"/tipJS/examples/common/models/CommonModel.js",
 		"/tipJS/tutorial/common/commonParent.js",
-		"/tipJS/tutorial/common/commonParent2.js"
+		"/tipJS/tutorial/common/commonParent2.js",
+		"/tipJS/tutorial/common/commonParent3.js"
 	],
 	commonView:[
 		"/tipJS/examples/common/views/CommonView.js",
