@@ -280,6 +280,9 @@ tipJS.ver = tipJS.version = "1.27";
 				return _syncModel;
 			}
 			_syncModel.loadCommonModel = __loadCommonModel__;
+			_syncModel.getById = __getById__;
+			_syncModel.getByName = __getByName__;
+			_syncModel.getByTag = __getByTag__;
 			if (typeof _syncModel.__init === "function") {
 				_syncModel.__init();
 				delete _syncModel.__init;
@@ -296,6 +299,9 @@ tipJS.ver = tipJS.version = "1.27";
 			return _ret;
 		}
 		_ret.loadCommonModel = __loadCommonModel__;
+		_ret.getById = __getById__;
+		_ret.getByName = __getByName__;
+		_ret.getByTag = __getByTag__;
 		if (typeof _ret.__init === "function") {
 			_ret.__init();
 			delete _ret.__init;
