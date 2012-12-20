@@ -1211,7 +1211,7 @@ tipJS.ver = tipJS.version = "1.28";
 
 	for (var i = _scripts.length; i--;) {
 		_scriptSrc = _scripts[i].src;
-		_match = _scriptSrc.match(/tipJS-MVC-dev\.js$/);
+		_match = _scriptSrc.match(/tipJS-MVC-1\.28-dev\.js$/);
 		if (_match) {
 			_filepath = _scriptSrc.substring(0, _scriptSrc.length - _match[0].length);
 			break;
