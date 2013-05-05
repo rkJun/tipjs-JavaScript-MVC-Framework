@@ -12,18 +12,6 @@ var tipJS = {};
 tipJS.ver = tipJS.version = "1.33";
 (function() {
 	"use strict";
-
-	/**
-	 * tipJs 에러 객체
-	 */
-	function TipJSError(message) {
-	  this.name = "TipJSError";
-	  this.message = message || "unexpected Error";
-	}
-	TipJSError.prototype = new Error();
-	TipJSError.prototype.constructor = TipJSError;
-
-
 	/**
 	 * obj 로부터 id 를 통해 object 획득
 	 *
@@ -111,14 +99,14 @@ tipJS.ver = tipJS.version = "1.33";
 	 */
 	var __registDepart = function(departType, depart) {
 		if (!depart || typeof depart != "object")
-			throw new TipJSError(__getDefErrMsg(departType));
+			throw new Error(__getDefErrMsg(departType));
 
 		var _appDepartName = (depart.__name) ? depart.__name : depart.name;
 		if (typeof _appDepartName != "string")
-			throw new TipJSError(__getDefErrMsg(departType));
+			throw new Error(__getDefErrMsg(departType));
 
 		if (depart.__extend && departType != "controllers" && __isSelfExt(depart.__extend, _appDepartName)) {
-			throw new TipJSError("Can't extend itself:" + _appDepartName);
+			throw new Error("Can't extend itself:" + _appDepartName);
 		}
 
 		var _arrAppDepart = _appDepartName.split("."),
@@ -127,7 +115,7 @@ tipJS.ver = tipJS.version = "1.33";
 			_app = __app__[_appName];
 
 		if (!_app)
-			throw new TipJSError(__getDefErrMsg(departType));
+			throw new Error(__getDefErrMsg(departType));
 
 		if (_app.loadOrder.presentOrder() === departType) {
 			var _sApp = __departBase__[_appName] = __departBase__[_appName] || {};
@@ -309,7 +297,7 @@ tipJS.ver = tipJS.version = "1.33";
 	var __loadCommonModel = tipJS.loadCommonModel = function(modelName, loadType) {
 		var _models = __commonModels__;
 		if (!_models[modelName] || _models[modelName] === undefined)
-			throw new TipJSError("Could not find commonModel: " + modelName);
+			throw new Error("Could not find commonModel: " + modelName);
 
 		// synchronized model
 		if (loadType === true) {
@@ -346,7 +334,7 @@ tipJS.ver = tipJS.version = "1.33";
 			_models = __departBase__[_appName].models;
 
 		if (!_models[modelName] || _models[modelName] === undefined)
-			throw new TipJSError("Could not find model: " + modelName);
+			throw new Error("Could not find model: " + modelName);
 
 		// synchronized model
 		if (loadType === true) {
@@ -381,7 +369,7 @@ tipJS.ver = tipJS.version = "1.33";
 	var __loadCommonView = function(viewName) {
 		var _views = __commonViews__;
 		if (!_views || !_views[viewName] || _views[viewName] === undefined)
-			throw new TipJSError("Could not find commonView: " + viewName);
+			throw new Error("Could not find commonView: " + viewName);
 
 		var _ret = __cloneObj(_views[viewName], __isFlat__["CommonView"+viewName]);
 		if (typeof _ret.__init == "function") {
@@ -400,7 +388,7 @@ tipJS.ver = tipJS.version = "1.33";
 		var _appName = (!appName) ? __app__.MAIN : appName,
 			_views = __departBase__[_appName].views;
 		if (!_views || !_views[viewName] || _views[viewName] === undefined)
-			throw new TipJSError("Could not find view: " + viewName);
+			throw new Error("Could not find view: " + viewName);
 
 		var _ret = __cloneObj(_views[viewName], __isFlat__["views"+_appName+"."+viewName]);
 		if (typeof _ret.__init == "function") {
@@ -421,7 +409,7 @@ tipJS.ver = tipJS.version = "1.33";
 		try {
 			var _arrName = appModelName.split("."), _appName = _arrName[0], _modelName = _arrName[1];
 		} catch(e) {
-			throw new TipJSError("tipJS.loadModel : invalid parameter");
+			throw new Error("tipJS.loadModel : invalid parameter");
 		}
 		return __loadModel(_modelName, _loadType, _appName);
 	}
@@ -871,7 +859,7 @@ tipJS.ver = tipJS.version = "1.33";
 
 			return _retTxt;
 		} else
-			throw new TipJSError("Could not find template file:" + _fileUrl);
+			throw new Error("Could not find template file:" + _fileUrl);
 	}
 
 	/**
@@ -972,14 +960,14 @@ tipJS.ver = tipJS.version = "1.33";
 	tipJS.commonModel = function(commonModel) {
 		var _type = "CommonModel";
 		if (!commonModel || typeof commonModel != "object")
-			throw new TipJSError(__getDefErrMsg(_type));
+			throw new Error(__getDefErrMsg(_type));
 
 		var _mdlName = (commonModel.__name) ? commonModel.__name : commonModel.name;
 		if (typeof _mdlName != "string")
-			throw new TipJSError(__getDefErrMsg(_type));
+			throw new Error(__getDefErrMsg(_type));
 
 		if (commonModel.__extend && __isSelfExt(commonModel.__extend, _mdlName))
-			throw new TipJSError("Can't extend itself:"+_mdlName);
+			throw new Error("Can't extend itself:"+_mdlName);
 
 		__commonModels__[_mdlName] = commonModel;
 	}
@@ -992,14 +980,14 @@ tipJS.ver = tipJS.version = "1.33";
 	tipJS.commonView = function(commonView) {
 		var _type = "CommonView";
 		if (!commonView || typeof commonView != "object")
-			throw new TipJSError(__getDefErrMsg(_type));
+			throw new Error(__getDefErrMsg(_type));
 
 		var _viewName = (commonView.__name) ? commonView.__name : commonView.name;
 		if (typeof _viewName != "string")
-			throw new TipJSError(__getDefErrMsg(_type));
+			throw new Error(__getDefErrMsg(_type));
 
 		if (commonView.__extend && __isSelfExt(commonView.__extend, _viewName))
-			throw new TipJSError("Can't extend itself:"+_viewName);
+			throw new Error("Can't extend itself:"+_viewName);
 
 		__commonViews__[_viewName] = commonView;
 	}
@@ -1086,7 +1074,7 @@ tipJS.ver = tipJS.version = "1.33";
 		_appName = _arrName[0],
 		_ctrlerName = _arrName[1];
 		if (_appName.length == 0 || _ctrlerName.length == 0) {
-			throw new TipJSError("tipJS.action : invalid parameter");
+			throw new Error("tipJS.action : invalid parameter");
 		}		
 
 		var _app = __app__[_appName];
@@ -1100,7 +1088,7 @@ tipJS.ver = tipJS.version = "1.33";
 		}
 
 		if (!_app.controller || !_app.controller[_ctrlerName])
-			throw new TipJSError("Could not find controller: " + ctrlerName);
+			throw new Error("Could not find controller: " + ctrlerName);
 
 		if (tipJS.isDevelopment === true)
 			var _ctrlerStartTime = __getSecs();
@@ -1108,7 +1096,7 @@ tipJS.ver = tipJS.version = "1.33";
 		var _ctrler = __cloneObj(_app.controller[_ctrlerName], __isFlat__["controllers"+_appName+"."+_ctrlerName]);
 
 		if (!_ctrler)
-			throw new TipJSError("Could not find controller");
+			throw new Error("Could not find controller");
 
 		var _ctrlerWrapper = {
 			controllerName:(_ctrler.__name) ? _ctrler.__name : _ctrler.name,
@@ -1187,7 +1175,7 @@ tipJS.ver = tipJS.version = "1.33";
 			var _filePath = __config__.applicationPath[_appName]+"/"+__config__.defineFileName+".js";
 			setTimeout(function() {
 				if (!__app__[_appName] || !__app__[_appName].define)
-					throw new TipJSError("Could not find application:"+_appName);
+					throw new Error("Could not find application:"+_appName);
 			}, 1000);
 			__loadJsFile(_filePath, {
 				nocache : true,
@@ -1299,7 +1287,7 @@ tipJS.ver = tipJS.version = "1.33";
 	__msg__ = {},
 	__templateCache__ = {},
 	__reservedStack__ = {},
-	__config__ = {},
+	__config__ = __cloneObj(__DEF_BASE__.config),
 	__isFlat__ = {},
 	_winLoc = window.location, _pathname = _winLoc.pathname, _queryString = _winLoc.search, _scripts = __getByTag('script'), _filepath, _scriptSrc, _match, _isDevelopment = null, _lang = (navigator.language || navigator.systemLanguage || navigator.userLanguage).substr(0,2);
 
