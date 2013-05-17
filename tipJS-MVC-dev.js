@@ -405,15 +405,15 @@ tipJS.ver = tipJS.version = "1.33";
 	 * @return Application Model Object
 	 */
 	tipJS.loadModel = function(appModelName, loadType) {
-		var _loadType = (typeof loadType == "boolean") ? loadType : false;
-		var _arrName = null, _appName = null, _modelName = null;
-		try {
-			_arrName = appModelName.split(".");
-			_appName = _arrName[0]; 
-			_modelName = _arrName[1];
-		} catch(e) {
+		var _arrName, _appName, _modelName,
+			_loadType = (typeof loadType == "boolean") ? loadType : false;
+
+		if ((_arrName = appModelName.split(".")).length != 2)
 			throw new Error("tipJS.loadModel : invalid parameter");
-		}
+
+		_appName = _arrName[0]; 
+		_modelName = _arrName[1];
+
 		return __loadModel(_modelName, _loadType, _appName);
 	};
 
@@ -911,7 +911,7 @@ tipJS.ver = tipJS.version = "1.33";
 		var _ret = [], _types = [], _newTokens = [],
 			_TYPE_PLANE = "PLN", _TYPE_VALUE = "VAL", _TYPE_PARSE = "PAS",
 			_cmdPush = '__tempArr__.push(',
-			i, _token, _tokens;
+			i, len, _token, _tokens;
 
 		_ret.push('var __tempArr__ = [];');
 		for (i = 0, len = tokens.length; i < len; i++) {
