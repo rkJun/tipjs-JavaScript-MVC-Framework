@@ -1169,7 +1169,7 @@ tipJS.ver = tipJS.version = "1.40";
 	 * @param params
 	 */
 	tipJS.action = function() {
-		var _arrName, _appName, _ctrlerName, _app;
+		var _arrName, _appName, _ctrlerName, _app, _ctrler;
 		if (!arguments.length) {
 			return __appCtrl__;
 		} else {
@@ -1188,8 +1188,8 @@ tipJS.ver = tipJS.version = "1.40";
 				});
 				return;
 			}
-			var ctrler = __appCtrl__[_appName][_ctrlerName];
-			ctrler.apply(ctrler, _args);
+			_ctrler = __appCtrl__[_appName][_ctrlerName];
+			_ctrler.apply(_ctrler, _args);
 		}
 	};
 
