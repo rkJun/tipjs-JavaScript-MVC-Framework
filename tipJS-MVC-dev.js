@@ -11,52 +11,52 @@
 (function(context) {
 	"use strict";
 
-  var tipJS = {};
-  tipJS.ver = tipJS.version = tipJS.VERSION = "1.40";
+	var tipJS = {};
+	tipJS.ver = tipJS.version = tipJS.VERSION = "1.40";
 
-  context.tipJS = tipJS;
+	context.tipJS = tipJS;
 
-  // Type Check [ecmascript 15.2.4.2] 참조
-  var oString = Object.prototype.toString;
+	// Type Check [ecmascript 15.2.4.2] 참조
+	var __oString = Object.prototype.toString;
 
-  /**
-   *  전달된 obj 가 아래 타입 중 어느 타입인지 체크
-   *  Arguments
-   *  Function
-   *  String
-   *  Number
-   *  Boolean
-   *  Date
-   *  RegExp
-   */
-  var types = [ 'Arguments', 'Function', 'String', 'Number', 'Boolean', 'Date', 'RegExp' ];
-  for(var t = 0, lt=types.length; t < lt; t = t + 1) {
-    (function(type) {
-      tipJS['is' + type] = function(obj) {
-        return oString.call(obj) === '[object '+type+']';
-      }
-    })(types[t]);
-  }
+	/**
+	 *  전달된 obj 가 아래 타입 중 어느 타입인지 체크
+	 *  Arguments
+	 *  Function
+	 *  String
+	 *  Number
+	 *  Boolean
+	 *  Date
+	 *  RegExp
+	 */
+	var __types = [ 'Arguments', 'Function', 'String', 'Number', 'Boolean', 'Date', 'RegExp' ];
+	for(var t = 0, lt=__types.length; t < lt; t = t + 1) {
+		(function(type) {
+			tipJS['is' + type] = function(obj) {
+				return __oString.call(obj) === '[object '+type+']';
+			}
+		})(__types[t]);
+	}
 
-  /**
-   * obj 가 Array 인지 체크
-   *
-   * @param obj
-   * @return boolean
-   */
-  tipJS.isArray = Array.isArray || function(obj) {
-    return oString.call(obj) === '[object Array]';
-  };
+	/**
+	 * obj 가 Array 인지 체크
+	 *
+	 * @param obj
+	 * @return boolean
+	 */
+	tipJS.isArray = Array.isArray || function(obj) {
+		return __oString.call(obj) === '[object Array]';
+	};
 
-  /**
-   * obj 가 Object 인지 체크 [ecmascript 15.2.1.1] 참조
-   *
-   * @param obj
-   * @return boolean
-   */
-  tipJS.isObject = function(obj) {
-    return obj === Object(obj);
-  };
+	/**
+	* obj 가 Object 인지 체크 [ecmascript 15.2.1.1] 참조
+	*
+	* @param obj
+	* @return boolean
+	*/
+	tipJS.isObject = function(obj) {
+		return obj === Object(obj);
+	};
 
 	/**
 	 * obj 로부터 id 를 통해 object 획득
