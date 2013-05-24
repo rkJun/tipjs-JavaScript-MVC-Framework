@@ -672,6 +672,9 @@
 			}
 		}
 		tipJS.debug("tipJS version " + tipJS.version + "[" + tipJS.lang + "]");
+		if (!tipJS.isArray(_app.onLoadArgs)) {
+			_app.onLoadArgs = [];
+		}
 		_app.define.onLoad.apply(_app.define, _app.onLoadArgs);
 		if (__reservedStack__ && __reservedStack__[appName]) {
 			var _reservedAction = __reservedStack__[appName];
