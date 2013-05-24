@@ -1,5 +1,5 @@
 /*
- * tipJS - OpenSource Javascript MVC Framework ver.1.41
+ * tipJS - OpenSource Javascript MVC Framework ver.1.40
  *
  * Copyright 2012.07 SeungHyun PAEK
  * Dual licensed under the MIT or GPL Version 2 licenses.
@@ -1388,7 +1388,7 @@
 
 	for (var i = _scripts.length; i--;) {
 		_scriptSrc = _scripts[i].src;
-		_match = _scriptSrc.match(/tipJS-MVC-dev\.js$/);
+		_match = _scriptSrc.match(/tipJS-MVC-1\.41-dev\.js$/);
 		if (_match) {
 			_filepath = _scriptSrc.substring(0, _scriptSrc.length - _match[0].length);
 			break;
