@@ -627,7 +627,7 @@
 				__commonModels__[k].getByName = __getByName;
 				__commonModels__[k].getByTag = __getByTag;
 			}
-			__isFlat__["CommonModel"+_mdlName] = __hasObj(__commonModels__[k]);
+			__isFlat__["CommonModel"+_mdlName] = !__hasObj(__commonModels__[k]);
 		}
 		// Model build
 		var _mdls = __departBase__[appName].models;
@@ -642,7 +642,7 @@
 					_mdls[k].getByName = __getByName;
 					_mdls[k].getByTag = __getByTag;
 				}
-				__isFlat__["models"+_mdlName] = __hasObj(_mdls[k]);
+				__isFlat__["models"+_mdlName] = !__hasObj(_mdls[k]);
 			}
 		}
 		// commonView build
@@ -654,7 +654,7 @@
 			__commonViews__[k].getById = __getById;
 			__commonViews__[k].getByName = __getByName;
 			__commonViews__[k].getByTag = __getByTag;
-			__isFlat__["CommonView"+_mdlName] = __hasObj(__commonViews__[k]);
+			__isFlat__["CommonView"+_mdlName] = !__hasObj(__commonViews__[k]);
 		}
 		// View build
 		var _views = __departBase__[appName].views;
@@ -668,7 +668,7 @@
 				_views[k].getById = __getById;
 				_views[k].getByName = __getByName;
 				_views[k].getByTag = __getByTag;
-				__isFlat__["views"+_mdlName] = __hasObj(_views[k]);
+				__isFlat__["views"+_mdlName] = !__hasObj(_views[k]);
 			}
 		}
 		tipJS.debug("tipJS version " + tipJS.version + "[" + tipJS.lang + "]");
@@ -779,7 +779,8 @@
 	 */
 	var __hasObj = function(obj) {
 		for (var k in obj) {
-			if (tipJS.isObject(obj[k]))
+			// Array 와 Object 일때 true
+			if (typeof obj[k] == "object")
 				return true;
 		}
 		return false;

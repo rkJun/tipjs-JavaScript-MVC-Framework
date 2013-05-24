@@ -7,17 +7,63 @@
  * Contact: http://www.tipjs.com/contact
  */
 
-/* tipJS initialization */
-var tipJS = {};
-tipJS.ver = tipJS.version = "1.40";
-(function() {
+// tipJS initialization
+(function(context) {
 	"use strict";
+
+	var tipJS = {};
+	tipJS.ver = tipJS.version = tipJS.VERSION = "1.40";
+
+	context.tipJS = tipJS;
+
+	// Type Check [ecmascript 15.2.4.2] 참조
+	var __oString = Object.prototype.toString;
+
+	/**
+	 *  전달된 obj 가 아래 타입 중 어느 타입인지 체크
+	 *  Arguments
+	 *  Function
+	 *  String
+	 *  Number
+	 *  Boolean
+	 *  Date
+	 *  RegExp
+	 */
+	var __types = [ 'Arguments', 'Function', 'String', 'Number', 'Boolean', 'Date', 'RegExp' ];
+	for(var t = 0, lt=__types.length; t < lt; t = t + 1) {
+		(function(type) {
+			tipJS['is' + type] = function(obj) {
+				return __oString.call(obj) === '[object '+type+']';
+			}
+		})(__types[t]);
+	}
+
+	/**
+	 * obj 가 Array 인지 체크
+	 *
+	 * @param obj
+	 * @return boolean
+	 */
+	tipJS.isArray = Array.isArray || function(obj) {
+		return __oString.call(obj) === '[object Array]';
+	};
+
+	/**
+	* obj 가 Object 인지 체크 [ecmascript 15.2.1.1] 참조
+	*
+	* @param obj
+	* @return boolean
+	*/
+	tipJS.isObject = function(obj) {
+		return obj === Object(obj);
+	};
+
 	/**
 	 * obj 로부터 id 를 통해 object 획득
 	 *
 	 * @param id
 	 * @param obj
-	 * @return Object
+	 * @return HTMLElement
 	 */
 	var __getById = function(id, obj){
 		return !obj ? document.getElementById(id):obj.getElementById(id);
@@ -28,7 +74,7 @@ tipJS.ver = tipJS.version = "1.40";
 	 *
 	 * @param name
 	 * @param obj
-	 * @return Objects
+	 * @return NodeList
 	 */
 	var __getByName = function(name, obj){
 		return !obj ? document.getElementsByName(name):obj.getElementsByName(name);
@@ -39,19 +85,25 @@ tipJS.ver = tipJS.version = "1.40";
 	 *
 	 * @param tag
 	 * @param obj
-	 * @return Objects
+	 * @return NodeList
 	 */
 	var __getByTag = function(tag, obj){
 		return !obj ? document.getElementsByTagName(tag):obj.getElementsByTagName(tag);
 	};
 
-	var __toArray = function(obj){
+  /**
+   * Array-liked-Object를 배열화함.
+   * @param obj
+   * @returns Array
+   * @private
+   */
+	var __toArray = function(obj) {
 		var _ret = [];
 		if (obj.length) {
 			for(var i=0, len=obj.length;i<len; i++) _ret[i] = obj[i];
 		}
 		return _ret;
-	}
+	};
 
 	/**
 	 * 정의 에러 메세지취득
@@ -87,7 +139,7 @@ tipJS.ver = tipJS.version = "1.40";
 	 * @return result
 	 */
 	var __isSelfExt = function(ext, name){
-		if (ext instanceof Array) {
+		if (tipJS.isArray(ext)) {
 			for(var i=ext.length; i--;){
 				if (ext[i] == name) {
 					return true;
@@ -106,11 +158,11 @@ tipJS.ver = tipJS.version = "1.40";
 	 * @param depart
 	 */
 	var __registDepart = function(departType, depart) {
-		if (!depart || typeof depart != "object")
+		if (!tipJS.isObject(depart))
 			throw new Error(__getDefErrMsg(departType));
 
 		var _appDepartName = (depart.__name) ? depart.__name : depart.name;
-		if (typeof _appDepartName != "string")
+		if (!tipJS.isString(_appDepartName))
 			throw new Error(__getDefErrMsg(departType));
 
 		if (depart.__extend && departType != "controllers" && __isSelfExt(depart.__extend, _appDepartName)) {
@@ -263,7 +315,7 @@ tipJS.ver = tipJS.version = "1.40";
 		if (!_parents)
 			return child;
 
-		if (typeof _parents == "string") {
+		if (tipJS.isString(_parents)) {
 			child = __getExtObj(child, _parents, type);
 		} else if (_parents instanceof Array) {
 			for (var i = _parents.length; i--;) {
@@ -323,7 +375,7 @@ tipJS.ver = tipJS.version = "1.40";
 		}
 		var _ret = __cloneObj(_models[modelName], __isFlat__["CommonModel"+modelName]);
 
-		if (typeof _ret.__init == "function") {
+		if (tipJS.isFunction(_ret.__init)) {
 			_ret.__init();
 		}
 		return _ret;
@@ -355,14 +407,14 @@ tipJS.ver = tipJS.version = "1.40";
 
 			var _syncModel = _syncModels[modelName] = __cloneObj(_models[modelName], __isFlat__["models"+_appName+"."+modelName]);
 
-			if (typeof _syncModel.__init == "function") {
+			if (tipJS.isFunction(_syncModel.__init)) {
 				_syncModel.__init();
 			}
 			return _syncModel;
 		}
 		var _ret = __cloneObj(_models[modelName], __isFlat__["models"+_appName+"."+modelName]);
 
-		if (typeof _ret.__init == "function") {
+		if (tipJS.isFunction(_ret.__init)) {
 			_ret.__init();
 		}
 		return _ret;
@@ -380,7 +432,7 @@ tipJS.ver = tipJS.version = "1.40";
 			throw new Error("Could not find commonView: " + viewName);
 
 		var _ret = __cloneObj(_views[viewName], __isFlat__["CommonView"+viewName]);
-		if (typeof _ret.__init == "function") {
+		if (tipJS.isFunction(_ret.__init)) {
 			_ret.__init();
 		}
 		return _ret;
@@ -399,7 +451,7 @@ tipJS.ver = tipJS.version = "1.40";
 			throw new Error("Could not find view: " + viewName);
 
 		var _ret = __cloneObj(_views[viewName], __isFlat__["views"+_appName+"."+viewName]);
-		if (typeof _ret.__init == "function") {
+		if (tipJS.isFunction(_ret.__init)) {
 			_ret.__init();
 		}
 		return _ret;
@@ -414,7 +466,7 @@ tipJS.ver = tipJS.version = "1.40";
 	 */
 	tipJS.loadModel = function(appModelName, loadType) {
 		var _arrName, _appName, _modelName,
-			_loadType = (typeof loadType == "boolean") ? loadType : false;
+			_loadType = (tipJS.isBoolean(loadType)) ? loadType : false;
 
 		if ((_arrName = appModelName.split(".")).length != 2)
 			throw new Error("tipJS.loadModel : invalid parameter");
@@ -532,7 +584,7 @@ tipJS.ver = tipJS.version = "1.40";
 				})(_ctrlerWrapper, _ctrler);
 			}
 		}
-	}
+	};
 
 	/**
 	 * Application 이 모두 load 된후 실행되는 메소드
@@ -575,7 +627,7 @@ tipJS.ver = tipJS.version = "1.40";
 				__commonModels__[k].getByName = __getByName;
 				__commonModels__[k].getByTag = __getByTag;
 			}
-			__isFlat__["CommonModel"+_mdlName] = __hasObj(__commonModels__[k]);
+			__isFlat__["CommonModel"+_mdlName] = !__hasObj(__commonModels__[k]);
 		}
 		// Model build
 		var _mdls = __departBase__[appName].models;
@@ -590,7 +642,7 @@ tipJS.ver = tipJS.version = "1.40";
 					_mdls[k].getByName = __getByName;
 					_mdls[k].getByTag = __getByTag;
 				}
-				__isFlat__["models"+_mdlName] = __hasObj(_mdls[k]);
+				__isFlat__["models"+_mdlName] = !__hasObj(_mdls[k]);
 			}
 		}
 		// commonView build
@@ -602,7 +654,7 @@ tipJS.ver = tipJS.version = "1.40";
 			__commonViews__[k].getById = __getById;
 			__commonViews__[k].getByName = __getByName;
 			__commonViews__[k].getByTag = __getByTag;
-			__isFlat__["CommonView"+_mdlName] = __hasObj(__commonViews__[k]);
+			__isFlat__["CommonView"+_mdlName] = !__hasObj(__commonViews__[k]);
 		}
 		// View build
 		var _views = __departBase__[appName].views;
@@ -616,11 +668,11 @@ tipJS.ver = tipJS.version = "1.40";
 				_views[k].getById = __getById;
 				_views[k].getByName = __getByName;
 				_views[k].getByTag = __getByTag;
-				__isFlat__["views"+_mdlName] = __hasObj(_views[k]);
+				__isFlat__["views"+_mdlName] = !__hasObj(_views[k]);
 			}
 		}
 		tipJS.debug("tipJS version " + tipJS.version + "[" + tipJS.lang + "]");
-		if (!_app.onLoadArgs) {
+		if (!tipJS.isArray(_app.onLoadArgs)) {
 			_app.onLoadArgs = [];
 		}
 		_app.define.onLoad.apply(_app.define, _app.onLoadArgs);
@@ -679,7 +731,7 @@ tipJS.ver = tipJS.version = "1.40";
 	 * @return Object Clone
 	 */
 	var __cloneObjN = function(target) {
-		if (typeof Object.create == "function") {
+		if (tipJS.isFunction(Object.create)) {
 			__cloneObjN = function(o) {
 				return Object.create(o);
 			};
@@ -727,6 +779,7 @@ tipJS.ver = tipJS.version = "1.40";
 	 */
 	var __hasObj = function(obj) {
 		for (var k in obj) {
+			// Array 와 Object 일때 true
 			if (typeof obj[k] == "object")
 				return true;
 		}
@@ -936,7 +989,7 @@ tipJS.ver = tipJS.version = "1.40";
 
 		if (__getAppDef(_appName).templateCache && __templateCache__[config.url]) {
 			_retTxt = __renderTpl(__templateCache__[config.url], config.data, config.tplId);
-			if (typeof config.renderTo == "string")
+			if (tipJS.isString(config.renderTo))
 				__getById(config.renderTo).innerHTML += _retTxt;
 
 			return _retTxt;
@@ -955,12 +1008,12 @@ tipJS.ver = tipJS.version = "1.40";
 		if (_xmlhttp.readyState == 4 && _xmlhttp.status == 200) {
 			_retTxt = __templateCache__[config.url] = _xmlhttp.responseText;
 			_retTxt = __renderTpl(_retTxt, config.data, config.tplId);
-			if (typeof config.renderTo == "string")
+			if (tipJS.isString(config.renderTo))
 				__getById(config.renderTo).innerHTML += _retTxt;
 
 			return _retTxt;
 		} else
-			throw new Error("Could not find template file:" + _fileUrl);
+			throw new Error("Could not find templates file:" + _fileUrl);
 	};
 
 	/**
@@ -977,7 +1030,7 @@ tipJS.ver = tipJS.version = "1.40";
 		html = html.replace(/\\/g, '\\\\');
 		html = html.replace(/\n/g, '');
 
-		if (typeof templateKey == "string") {
+		if (tipJS.isString(templateKey)) {
 			var _applyAreas = html.split("[[#"),
 				_regEx = new RegExp("^"+templateKey+"\]\]");
 			for (var i = 0, len = _applyAreas.length; i < len; i++) {
@@ -1172,7 +1225,7 @@ tipJS.ver = tipJS.version = "1.40";
 	 * @param params
 	 */
 	tipJS.action = function() {
-		var _arrName, _appName, _ctrlerName, _app;
+		var _arrName, _appName, _ctrlerName, _app, _ctrler;
 		if (!arguments.length) {
 			return __appCtrl__;
 		} else {
@@ -1191,8 +1244,8 @@ tipJS.ver = tipJS.version = "1.40";
 				});
 				return;
 			}
-			var ctrler = __appCtrl__[_appName][_ctrlerName];
-			ctrler.apply(ctrler, _args);
+			_ctrler = __appCtrl__[_appName][_ctrlerName];
+			_ctrler.apply(_ctrler, _args);
 		}
 	};
 
@@ -1348,4 +1401,5 @@ tipJS.ver = tipJS.version = "1.40";
 	tipJS.isDevelopment = _isDevelopment;
 	tipJS.lang = _lang;
 	document.write('<script type="text/javascript" charset="UTF-8" src="' + _filepath + 'tipJS.config.js?' + __config__.noCacheParam + '=' + Math.random() + '"></script>');
-})();
+
+})(this);
