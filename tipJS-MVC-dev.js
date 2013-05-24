@@ -750,13 +750,13 @@
 	 * @return Object Clone
 	 */
 	var __cloneObj = tipJS.cloneObject = function(obj, isFlat){
-		if (tipJS.isObject(obj)) {
+		if (obj == null || typeof obj != "object") {
 			return obj;
 		}
 		if (!isFlat) {
 			var newObj = (obj instanceof Array) ? [] : {};
 			for (var k in obj) {
-				if (tipJS.isObject(obj[k])) {
+				if (typeof obj[k] == "object") {
 					newObj[k] = __cloneObj(obj[k], false);
 				} else {
 					newObj[k] = obj[k];
