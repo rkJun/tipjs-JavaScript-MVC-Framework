@@ -25,10 +25,11 @@
    *  Function
    *  String
    *  Number
+   *  Boolean
    *  Date
    *  RegExp
    */
-  var types = [ 'Arguments', 'Function', 'String', 'Number', 'Date', 'RegExp' ];
+  var types = [ 'Arguments', 'Function', 'String', 'Number', 'Boolean', 'Date', 'RegExp' ];
   for(var t = 0, lt=types.length; t < lt; t = t + 1) {
     (function(type) {
       tipJS['is' + type] = function(obj) {
