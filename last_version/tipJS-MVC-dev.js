@@ -1,5 +1,5 @@
 /*
- * tipJS - OpenSource Javascript MVC Framework ver.1.41
+ * tipJS - OpenSource Javascript MVC Framework ver.1.42
  *
  * Copyright 2012.07 SeungHyun PAEK
  * Dual licensed under the MIT or GPL Version 2 licenses.
@@ -7,12 +7,11 @@
  * Contact: http://www.tipjs.com/contact
  */
 
-// tipJS initialization
 (function(context) {
 	"use strict";
 
 	var tipJS = {};
-	tipJS.ver = tipJS.version = tipJS.VERSION = "1.41";
+	tipJS.ver = tipJS.version = tipJS.VERSION = "1.42";
 
 	context.tipJS = tipJS;
 
@@ -30,7 +29,7 @@
 	 *  RegExp
 	 */
 	var __types = [ 'Arguments', 'Function', 'String', 'Number', 'Boolean', 'Date', 'RegExp' ];
-	for(var t = 0, lt=__types.length; t < lt; t = t + 1) {
+	for(var t = 0, lt=__types.length; t < lt; t++) {
 		(function(type) {
 			tipJS['is' + type] = function(obj) {
 				return __oString.call(obj) === '[object '+type+']';
@@ -112,7 +111,7 @@
 	 * @return errMsg
 	 */
 	var __getDefErrMsg = function(name){
-		return "Please check your " + name + " definition";
+		return "Please : define " + name;
 	};
 
 	/**
@@ -151,6 +150,7 @@
 		}
 		return false;
 	};
+
 	/**
 	 * depart Object 를 departType 으로 등록
 	 *
@@ -165,8 +165,8 @@
 		if (!tipJS.isString(_appDepartName))
 			throw new Error(__getDefErrMsg(departType));
 
-		if (depart.__extend && departType != "controllers" && __isSelfExt(depart.__extend, _appDepartName)) {
-			throw new Error("Can't extend itself:" + _appDepartName);
+		if (depart.__extend && departType != "controllers" && departType != "interceptors" && __isSelfExt(depart.__extend, _appDepartName)) {
+			throw new Error("Can't extend itself: " + _appDepartName);
 		}
 
 		var _arrAppDepart = _appDepartName.split("."),
@@ -357,7 +357,7 @@
 	var __loadCommonModel = tipJS.loadCommonModel = function(modelName, loadType) {
 		var _models = __commonModels__;
 		if (!_models[modelName] || _models[modelName] === undefined)
-			throw new Error("Could not find commonModel: " + modelName);
+			throw new Error("Can't find commonModel: " + modelName);
 
 		// synchronized model
 		if (loadType === true) {
@@ -394,7 +394,7 @@
 			_models = __departBase__[_appName].models;
 
 		if (!_models[modelName] || _models[modelName] === undefined)
-			throw new Error("Could not find model: " + modelName);
+			throw new Error("Can't find model: " + modelName);
 
 		// synchronized model
 		if (loadType === true) {
@@ -429,7 +429,7 @@
 	var __loadCommonView = function(viewName) {
 		var _views = __commonViews__;
 		if (!_views || !_views[viewName] || _views[viewName] === undefined)
-			throw new Error("Could not find commonView: " + viewName);
+			throw new Error("Can't find commonView: " + viewName);
 
 		var _ret = __cloneObj(_views[viewName], __isFlat__["CommonView"+viewName]);
 		if (tipJS.isFunction(_ret.__init)) {
@@ -448,7 +448,7 @@
 		var _appName = (!appName) ? __app__.MAIN : appName,
 			_views = __departBase__[_appName].views;
 		if (!_views || !_views[viewName] || _views[viewName] === undefined)
-			throw new Error("Could not find view: " + viewName);
+			throw new Error("Can't find view: " + viewName);
 
 		var _ret = __cloneObj(_views[viewName], __isFlat__["views"+_appName+"."+viewName]);
 		if (tipJS.isFunction(_ret.__init)) {
@@ -517,17 +517,17 @@
 			for (_ctrlName in _ctrlers){
 				_ctrler = __cloneObj(_ctrlers[_ctrlName]);
 				_ctrlerWrapper = {
-					controllerName:(_ctrler.__name) ? _ctrler.__name : _ctrler.name,
-					beforeCtrler : _app.define.beforeController,
-					afterCtrler : _app.define.afterController,
+					controllerName  : (_ctrler.__name) ? _ctrler.__name : _ctrler.name,
+					beforeCtrler    : _app.define.beforeController,
+					afterCtrler     : _app.define.afterController,
 					loadCommonModel : _ctrler.loadCommonModel,
-					loadCommonView : _ctrler.loadCommonView,
-					loadModel : _ctrler.loadModel,
-					loadView : _ctrler.loadView,
-					renderTemplate : _ctrler.renderTemplate,
-					getById : _ctrler.getById,
-					getByName : _ctrler.getByName,
-					getByTag : _ctrler.getByTag
+					loadCommonView  : _ctrler.loadCommonView,
+					loadModel       : _ctrler.loadModel,
+					loadView        : _ctrler.loadView,
+					renderTemplate  : _ctrler.renderTemplate,
+					getById         : _ctrler.getById,
+					getByName       : _ctrler.getByName,
+					getByTag        : _ctrler.getByTag
 				};
 				__appCtrl__[_appName][_ctrlName] = (function(wrapper, ctrler){
 					return function(){
@@ -587,6 +587,115 @@
 	};
 
 	/**
+	 * 사용자 입력 interceptor 의 규격화
+	 *
+	 * @param appName
+	 */
+	var __makeInterceptors = function(appName){
+		var _interceptor, _interceptors = __departBase__[appName].interceptors, _scope, _before, _after;
+		for (var k in _interceptors) {
+			_scope = _before = _after = [];
+			_interceptor = _interceptors[k];
+			if (_interceptor.target) _scope = (tipJS.isArray(_interceptor.target)) ? _interceptor.target : [_interceptor.target];
+			if (_interceptor.before) _before = (tipJS.isArray(_interceptor.before)) ? _interceptor.before : [_interceptor.before];
+			if (_interceptor.after) _after = (tipJS.isArray(_interceptor.after)) ? _interceptor.after : [_interceptor.after];
+			__interceptors__.push({
+				scope : _scope,
+				before : _before,
+				after : _after
+			});
+		}
+	};
+
+	/**
+	 * Advice 를 원 method 에 설정
+	 *
+	 * @param func
+	 * @param depart
+	 * @param interceptor
+	 * @return function
+	 */
+	var __setAdvice = function(func, depart, interceptor){
+		return function(){
+			var _args = arguments;
+			var _before = interceptor.before, _after = interceptor.after;
+			for (var i=0,len=_before.length; i<len; i++){
+				_before[i].apply(depart, _args);
+			}
+			func.apply(depart, _args);
+			for (var i=0,len=_after.length; i<len; i++){
+				_after[i].apply(depart, _args);
+			}
+		};
+	}
+
+	/**
+	 * 각 파트별로 intercept 처리
+	 *
+	 * @param appName
+	 * @param departName
+	 */
+	var __interceptDepart = function(appName, departName){
+		for (var i=__interceptors__.length; i--;){
+			var _interceptor = __interceptors__[i],
+				_scopes = _interceptor.scope;
+
+			for (var ii=0, llen=_scopes.length; ii<llen; ii++){
+				var _scope = _scopes[ii],
+					_ranges = _scope.split(".");
+
+				if (_ranges.length == 1) {
+					if (departName == _scope || departName+"*" == _scope) {
+						var _departs = __departBase__[appName][departName];
+						for(var k in _departs){
+							var _depart = _departs[k];
+							for(var kk in _depart) {
+								if (tipJS.isFunction(_depart[kk])) {
+									_depart[kk] = __setAdvice(_depart[kk], _depart, _interceptor);
+								}
+							}
+						}
+					}
+				} else if (_ranges.length == 2) {
+					var _departName = _ranges[0], _className = _ranges[1];
+					if (departName == _departName) {
+						// controllers, models, views
+						var _departs = __departBase__[appName][departName];
+						for(var k in _departs){
+							if (k == _className || (_className.indexOf("*") > 0 && k.indexOf(_className.substr(0,_className.indexOf("*"))) == 0)) {
+								var _depart = _departs[k];
+								for(var kk in _depart) {
+									if (tipJS.isFunction(_depart[kk])) {
+										_depart[kk] = __setAdvice(_depart[kk], _depart, _interceptor);
+									}
+								}
+							}
+						}
+					}
+				} else if (_ranges.length == 3) {
+					var _departName = _ranges[0], _className = _ranges[1], _funcName = _ranges[2];
+					if (departName == _departName) {
+						// controllers, models, views
+						var _departs = __departBase__[appName][departName];
+						for(var k in _departs){
+							if (k == _className) {
+								var _depart = _departs[k];
+								for(var kk in _depart) {
+									if (kk == _funcName || (_funcName.indexOf("*") > 0 && kk.indexOf(_funcName.substr(0,_funcName.indexOf("*"))) == 0)) {
+										if (tipJS.isFunction(_depart[kk])) {
+											_depart[kk] = __setAdvice(_depart[kk], _depart, _interceptor);
+										}
+									}
+								}
+							}
+						}
+					}
+				}
+			}
+		}
+	};
+
+	/**
 	 * Application 이 모두 load 된후 실행되는 메소드
 	 * Application 의 모든 depart 를 재정의 후 define.js 에서 정의된 onLoad 메소드 호출
 	 *
@@ -601,9 +710,11 @@
 		}
 		if (__app__.MAIN != appName) return;
 
+		__makeInterceptors(appName);
 		// Controller build
 		var _ctrlers = _app.controller = __departBase__[appName].controllers;
 		if (_ctrlers) {
+			__interceptDepart(appName, "controllers");
 			for (k in _ctrlers) {
 				_ctrlers[k].loadCommonModel = __loadCommonModel;
 				_ctrlers[k].loadCommonView = __loadCommonView;
@@ -614,9 +725,9 @@
 				_ctrlers[k].getByName = __getByName;
 				_ctrlers[k].getByTag = __getByTag;
 			}
+			// AppCtrl build
+			__makeAppCtrl();
 		}
-		// AppCtrl build
-		__makeAppCtrl();
 		// commonModel build
 		for (k in __commonModels__) {
 			_mdlName = (__commonModels__[k].__name) ? __commonModels__[k].__name : __commonModels__[k].name;
@@ -632,6 +743,7 @@
 		// Model build
 		var _mdls = __departBase__[appName].models;
 		if (_mdls) {
+			__interceptDepart(appName, "models");
 			for (k in _mdls) {
 				_mdlName = (_mdls[k].__name) ? _mdls[k].__name : _mdls[k].name;
 				__extModel(_mdls[k], "model");
@@ -659,6 +771,7 @@
 		// View build
 		var _views = __departBase__[appName].views;
 		if (_views) {
+			__interceptDepart(appName, "views");
 			for (k in _views) {
 				_mdlName = (_views[k].__name) ? _views[k].__name : _views[k].name;
 				__extModel(_views[k], "view");
@@ -913,8 +1026,12 @@
 	 * @return seconds
 	 */
 	var __getSecs = function(){
-		var _now = new Date();
-		return (_now.now) ? _now.now() : _now.getTime();
+		if (Date.now) {
+			__getSecs = function(){ return Date.now();};
+		} else {
+			__getSecs = function(){ return (new Date).getTime();};
+		}
+		return __getSecs();
 	};
 
 	/* Benchmark */
@@ -1013,7 +1130,7 @@
 
 			return _retTxt;
 		} else
-			throw new Error("Could not find templates file:" + _fileUrl);
+			throw new Error("Can't find templates file: " + _fileUrl);
 	};
 
 	/**
@@ -1122,7 +1239,7 @@
 			throw new Error(__getDefErrMsg(_type));
 
 		if (commonModel.__extend && __isSelfExt(commonModel.__extend, _mdlName))
-			throw new Error("Can't extend itself:"+_mdlName);
+			throw new Error("Can't extend itself: "+_mdlName);
 
 		__commonModels__[_mdlName] = commonModel;
 	};
@@ -1142,7 +1259,7 @@
 			throw new Error(__getDefErrMsg(_type));
 
 		if (commonView.__extend && __isSelfExt(commonView.__extend, _viewName))
-			throw new Error("Can't extend itself:"+_viewName);
+			throw new Error("Can't extend itself: "+_viewName);
 
 		__commonViews__[_viewName] = commonView;
 	};
@@ -1189,6 +1306,15 @@
 	 */
 	tipJS.msg = function(key){
 		return __msg__[key] ? __msg__[key] : key;
+	};
+
+	/**
+	 * tipJS 의 Interceptor 정의 메소드
+	 *
+	 * @param interceptor
+	 */
+	tipJS.interceptor = function(interceptor) {
+		__registDepart("interceptors", interceptor);
 	};
 
 	/**
@@ -1269,7 +1395,7 @@
 			var _filePath = __config__.applicationPath[_appName]+"/"+__config__.defineFileName+".js";
 			setTimeout(function() {
 				if (!__app__[_appName] || !__app__[_appName].define)
-					throw new Error("Could not find application:"+_appName);
+					throw new Error("Can't find application: "+_appName);
 			}, 1000);
 			__loadJsFile(_filePath, {
 				nocache : true,
@@ -1323,6 +1449,7 @@
 	 */
 	var __require__ = {},
 	__departBase__ = {},
+	__interceptors__ = [],
 	__commonModels__ = {},
 	__commonSyncModels__ = {},
 	__commonViews__ = {},
@@ -1337,6 +1464,7 @@
 			defineFileName : "define",
 			path : {
 				lang : "lang",
+				interceptors : "interceptors",
 				controllers : "controllers",
 				models : "models",
 				views : "views"
@@ -1347,6 +1475,7 @@
 		define : {
 			extLib : [],
 			lang : [],
+			interceptors : [],
 			controllers : [],
 			models : [],
 			views : [],
@@ -1373,7 +1502,7 @@
 			isLastOrder : function() {
 				return (this.index + 1) == this.order.length;
 			},
-			order : ["extLib", "lang", "controllers", "models", "views"]
+			order : ["extLib", "lang", "interceptors","controllers", "models", "views"]
 		}
 	},
 	__benchRecs__ = {},
