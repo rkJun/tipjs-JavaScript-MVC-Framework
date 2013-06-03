@@ -34,6 +34,7 @@ tipJS.config({
 		todoMVC : '/tipJS/examples/todoMVC',
 		
 		Controller : '/tipJS/tutorials/Controller',
+		Interceptor : '/tipJS/tutorials/Interceptor',
 		Model : '/tipJS/tutorials/Model',
 		ModelExtend : '/tipJS/tutorials/ModelExtend',
 		ModelSync : '/tipJS/tutorials/ModelSync',

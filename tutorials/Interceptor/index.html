@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<meta charset="utf-8">
+<head>
+<title>tipJS.com - Javascript MVC Framework Interceptor(AOP) Tutorial</title>
+</head>
+<body>
+<h1>tipJS.com - JavaScript MVC Framework <br />Interceptor(AOP) Tutorial</h1>
+	<input type="button" value="Controller01"
+	onclick="tipJS.action().Interceptor.ctrl01()"/>
+	<input type="button" value="Controller02"
+	onclick="tipJS.action().Interceptor.ctrl02()"/>
+<h2>Div</h2>
+	<div id="screen"></div>
+<h2>Log</h2>
+	<div id="console"></div>
+<h4><a href="define.js" target="_blank">define.js</a></h4>
+<h4>Controller</h4>
+<ul>
+	<li>controllers</li>
+	<ul>
+		<li><a href="controllers/ctrl01.js" target="_blank">ctrl01.js</a></li>
+		<li><a href="controllers/ctrl02.js" target="_blank">ctrl02.js</a></li>
+	</ul>
+</ul>
+<h4>Interceptor</h4>
+<ul>
+	<li>interceptors</li>
+	<ul>
+		<li><a href="interceptors/logger.js" target="_blank">logger.js</a></li>
+	</ul>
+</ul>
+<script src="../../tipJS-MVC-dev.js"></script>
+<script>
+	tipJS.loadApp("Interceptor");
+</script>
+</body>
+</html>
