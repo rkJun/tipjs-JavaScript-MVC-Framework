@@ -1,5 +1,5 @@
 /*
- * tipJS - OpenSource Javascript MVC Framework ver.1.42
+ * tipJS - OpenSource Javascript MVC Framework ver.1.43
  *
  * Copyright 2012.07 SeungHyun PAEK
  * Dual licensed under the MIT or GPL Version 2 licenses.
@@ -11,7 +11,7 @@
 	"use strict";
 
 	var tipJS = {};
-	tipJS.ver = tipJS.version = tipJS.VERSION = "1.42";
+	tipJS.ver = tipJS.version = tipJS.VERSION = "1.43";
 
 	context.tipJS = tipJS;
 
@@ -222,7 +222,7 @@
 	var __getUnitPathList = function(rootPath, unitPath, unit) {
 		var _ret = [];
 		for (var i = unit.length; i--;) {
-			_ret.push(rootPath + __wrapPath(unitPath) + unit[i]);
+			_ret.push(rootPath + "/" + unitPath + "/" + unit[i]);
 		}
 		return _ret;
 	};
@@ -592,41 +592,106 @@
 	 * @param appName
 	 */
 	var __makeInterceptors = function(appName){
-		var _interceptor, _interceptors = __departBase__[appName].interceptors, _scope, _before, _after;
+		var _interceptor, _interceptors = __departBase__[appName].interceptors, _scope, _before, _after, _order;
 		for (var k in _interceptors) {
 			_scope = _before = _after = [];
 			_interceptor = _interceptors[k];
+			_order = (_interceptor.order) ? _interceptor.order : 0;
 			if (_interceptor.target) _scope = (tipJS.isArray(_interceptor.target)) ? _interceptor.target : [_interceptor.target];
 			if (_interceptor.before) _before = (tipJS.isArray(_interceptor.before)) ? _interceptor.before : [_interceptor.before];
 			if (_interceptor.after) _after = (tipJS.isArray(_interceptor.after)) ? _interceptor.after : [_interceptor.after];
 			__interceptors__.push({
+				order : _order,
 				scope : _scope,
 				before : _before,
 				after : _after
 			});
 		}
+		__interceptors__.sort(function(l, r){
+			return l.order - r.order;
+		});
 	};
 
 	/**
-	 * Advice 를 원 method 에 설정
+	 * Before Advice 를 원 method 에 설정
 	 *
 	 * @param func
 	 * @param depart
 	 * @param interceptor
 	 * @return function
 	 */
-	var __setAdvice = function(func, depart, interceptor){
+	var __setBeforeAdvice = function(func, depart, interceptor){
 		return function(){
-			var _args = arguments;
-			var _before = interceptor.before, _after = interceptor.after;
+			var _before = interceptor.before;
 			for (var i=0,len=_before.length; i<len; i++){
-				_before[i].apply(depart, _args);
+				_before[i].apply(depart, arguments);
 			}
-			func.apply(depart, _args);
+			func.apply(depart, arguments);
+		};
+	}
+
+	/**
+	 * After Advice 를 원 method 에 설정
+	 *
+	 * @param func
+	 * @param depart
+	 * @param interceptor
+	 * @return function
+	 */
+	var __setAfterAdvice = function(func, depart, interceptor){
+		return function(){
+			var _after = interceptor.after;
+			func.apply(depart, arguments);
 			for (var i=0,len=_after.length; i<len; i++){
-				_after[i].apply(depart, _args);
+				_after[i].apply(depart, arguments);
 			}
 		};
+	}
+
+	/**
+	 * 각 point cut별로 intercept 처리
+	 *
+	 * @param appName
+	 * @param departName
+	 */
+	var __interceptScope = function(appName, departName, scope, interceptor, setAdviceFn){
+		var _ranges = scope.split("."), _departs = __departBase__[appName][departName];
+		if (_ranges.length == 1 && (departName == scope || departName+"*" == scope)) {
+			for(var k in _departs){
+				var _depart = _departs[k];
+				for(var kk in _depart) {
+					if (tipJS.isFunction(_depart[kk])) {
+						_depart[kk] = setAdviceFn(_depart[kk], _depart, interceptor);
+					}
+				}
+			}
+		} else if (_ranges.length == 2 && departName == _ranges[0]) {
+			var _className = _ranges[1];
+			for(var k in _departs){
+				if (k == _className || (_className.indexOf("*") > 0 && k.indexOf(_className.substr(0,_className.indexOf("*"))) == 0)) {
+					var _depart = _departs[k];
+					for(var kk in _depart) {
+						if (tipJS.isFunction(_depart[kk])) {
+							_depart[kk] = setAdviceFn(_depart[kk], _depart, interceptor);
+						}
+					}
+				}
+			}
+		} else if (_ranges.length == 3 && departName == _ranges[0]) {
+			var _className = _ranges[1], _funcName = _ranges[2];
+			for(var k in _departs){
+				if (k == _className) {
+					var _depart = _departs[k];
+					for(var kk in _depart) {
+						if (kk == _funcName || (_funcName.indexOf("*") > 0 && kk.indexOf(_funcName.substr(0,_funcName.indexOf("*"))) == 0)) {
+							if (tipJS.isFunction(_depart[kk])) {
+								_depart[kk] = setAdviceFn(_depart[kk], _depart, interceptor);
+							}
+						}
+					}
+				}
+			}
+		}
 	}
 
 	/**
@@ -637,60 +702,15 @@
 	 */
 	var __interceptDepart = function(appName, departName){
 		for (var i=__interceptors__.length; i--;){
-			var _interceptor = __interceptors__[i],
-				_scopes = _interceptor.scope;
-
-			for (var ii=0, llen=_scopes.length; ii<llen; ii++){
-				var _scope = _scopes[ii],
-					_ranges = _scope.split(".");
-
-				if (_ranges.length == 1) {
-					if (departName == _scope || departName+"*" == _scope) {
-						var _departs = __departBase__[appName][departName];
-						for(var k in _departs){
-							var _depart = _departs[k];
-							for(var kk in _depart) {
-								if (tipJS.isFunction(_depart[kk])) {
-									_depart[kk] = __setAdvice(_depart[kk], _depart, _interceptor);
-								}
-							}
-						}
-					}
-				} else if (_ranges.length == 2) {
-					var _departName = _ranges[0], _className = _ranges[1];
-					if (departName == _departName) {
-						// controllers, models, views
-						var _departs = __departBase__[appName][departName];
-						for(var k in _departs){
-							if (k == _className || (_className.indexOf("*") > 0 && k.indexOf(_className.substr(0,_className.indexOf("*"))) == 0)) {
-								var _depart = _departs[k];
-								for(var kk in _depart) {
-									if (tipJS.isFunction(_depart[kk])) {
-										_depart[kk] = __setAdvice(_depart[kk], _depart, _interceptor);
-									}
-								}
-							}
-						}
-					}
-				} else if (_ranges.length == 3) {
-					var _departName = _ranges[0], _className = _ranges[1], _funcName = _ranges[2];
-					if (departName == _departName) {
-						// controllers, models, views
-						var _departs = __departBase__[appName][departName];
-						for(var k in _departs){
-							if (k == _className) {
-								var _depart = _departs[k];
-								for(var kk in _depart) {
-									if (kk == _funcName || (_funcName.indexOf("*") > 0 && kk.indexOf(_funcName.substr(0,_funcName.indexOf("*"))) == 0)) {
-										if (tipJS.isFunction(_depart[kk])) {
-											_depart[kk] = __setAdvice(_depart[kk], _depart, _interceptor);
-										}
-									}
-								}
-							}
-						}
-					}
-				}
+			var _interceptor = __interceptors__[i],	_scopes = _interceptor.scope;
+			for (var j=0, jlen=_scopes.length; j<jlen; j++){
+				__interceptScope(appName, departName, _scopes[j], _interceptor, __setBeforeAdvice);
+			}
+		}
+		for (var i=0, len=__interceptors__.length; i<len; i++){
+			var _interceptor = __interceptors__[i], _scopes = _interceptor.scope;
+			for (var j=0, jlen = _scopes.length; j<jlen; j++){
+				__interceptScope(appName, departName, _scopes[j], _interceptor, __setAfterAdvice);
 			}
 		}
 	};
@@ -702,8 +722,7 @@
 	 * @param appName
 	 */
 	var __afterAppLoaded = function(appName) {
-		var k, _mdlName;
-		var _app = __app__[appName];
+		var k, _mdlName, _app = __app__[appName];
 		if (_app.loadOrder.isLastOrder() === false) {
 			__loadDepart(appName, _app.loadOrder.nextOrder());
 			return;
@@ -828,16 +847,6 @@
 	};
 
 	/**
-	 * File 경로에 대한 Wrapper
-	 *
-	 * @param path
-	 * @return ex) /path/
-	 */
-	var __wrapPath = function(path) {
-		return "/" + path + "/";
-	};
-
-	/**
 	 * 인수로 들어온 Object 의 복제를 반환(속도용)
 	 *
 	 * @param target
@@ -951,15 +960,15 @@
 	 * @return unique 한 요소를 갖는 array
 	 */
 	var __uniqArray = tipJS.uniqueArray = function(arr) {
-		var ret = [], len = arr.length;
-		for (var i = 0; i < len; i++) {
-			for (var j = i + 1; j < len; j++) {
+		var _ret = [], _len = arr.length;
+		for (var i = 0; i < _len; i++) {
+			for (var j = i + 1; j < _len; j++) {
 				if (arr[i] === arr[j])
 					j = ++i;
 			}
-			ret.push(arr[i]);
+			_ret.push(arr[i]);
 		}
-		return ret;
+		return _ret;
 	};
 
 	/**
@@ -1097,7 +1106,7 @@
 	 * @param config
 	 * @return Template string
 	 */
-	var __getTpl = function(config) {
+	var __getTpl = tipJS.renderTemplate = function(config) {
 		var _retTxt;
 		var _appName = __app__.MAIN;
 		if (arguments.length > 1) {
@@ -1292,7 +1301,7 @@
 	/**
 	 * tipJS 의 localSet 정의 메소드
 	 *
-	 * @param controller
+	 * @param msgs
 	 */
 	tipJS.localSet = function(msgs) {
 		var _app = __app__[__app__.MAIN];
@@ -1302,7 +1311,7 @@
 	/**
 	 * tipJS 의 localSet 메세지 취득
 	 *
-	 * @param controller
+	 * @param key
 	 */
 	tipJS.msg = function(key){
 		return __msg__[key] ? __msg__[key] : key;
@@ -1490,9 +1499,6 @@
 		},
 		loadOrder : {
 			index : 0,
-			init : function() {
-				this.index = 0;
-			},
 			presentOrder : function() {
 				return this.order[this.index];
 			},
